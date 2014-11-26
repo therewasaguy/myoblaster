@@ -16,7 +16,7 @@ var myoblast = [];
 var path = [];
 
 var cnv;
-var leftPadding = 200;
+var leftPadding = 210;
 var topPadding = 0;
 
 function setup() {
