@@ -8,5 +8,4 @@ var scales = [
   [0, 2, 3, 6, 7, 8, 11]
 ];
 
-var currentScale = scales[3];
-// var root = 40;
+var currentScale = scales[2];

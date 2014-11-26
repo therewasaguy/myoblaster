@@ -40,7 +40,7 @@ function notePlucked(e) {
   var duration = noteChunk[2];
 
   var percentDone = map(scorePos, 0, currentScore.length, 0, width);
-  var heightOfEllipse = map(noteChunk[1], root, root + 40, height - 100, 100);
+  var heightOfEllipse = map(noteChunk[1], root, root + 12 * Math.floor( alphabet.length / currentScale.length ), height - 100, 100);
   path.push([percentDone, heightOfEllipse]);
   if (scorePos >= currentScore.length - 1) {
     Tone.Transport.stop(e);
@@ -53,6 +53,5 @@ function notePlucked(e) {
 
   synth1.triggerAttackRelease(synth1.midiToNote(note), duration, e);
   synth2.triggerAttackRelease(synth1.midiToNote(note), duration, e);
-
 
 }
