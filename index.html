@@ -1,13 +1,61 @@
 <head>
   <script language="javascript" src="./lib/p5.min.js"></script>
+  <script language="javascript" src="./lib/p5.dom.js"></script>
   <script language="javascript" src="./lib/Tone.js"></script>
   <script language="javascript" src="aminoMap.js"></script>
   <script language="javascript" src="noteMap.js"></script>
   <script language="javascript" src="sonify.js"></script>
+  <script language="javascript" src="ui.js"></script>
   <script language="javascript" src="sketch.js"></script>
 
-  <style> body {padding: 0; margin: 0;} </style>
+  <style> 
+
+    body {
+      padding: 0;
+      margin: 0;
+      font-family: sans-serif;
+    }
+
+    #menu {
+      width: 200px;
+    }
+    select {
+      font-size: 32px;
+      padding: 5px;
+      margin: 5px;
+    }
+
+    h2 {
+      color: #ff0000;
+      background-color: #ffff00;
+      line-height: 100%;
+    }
+
+
+    </style>
 </head>
 
 <body>
+  <div id="menu">
+
+    <div id="header">
+    <h2>Generate Music<br/>
+    With Myoblasts</h2>
+    <div>
+
+    <div id="subheader">
+    <b>Select myoblast genes:</b>
+    </div>
+
+    <div id="dropdown">
+    </div>
+
+    <div id="belowDrop">
+    <br/>
+    <br/>
+    Animals selected from the <a href="https://www.google.ca/patents/WO2013016547A2">
+    US patent for Engineered Comestible Meat</a>
+    </div>
+
+  </div>
 </body>

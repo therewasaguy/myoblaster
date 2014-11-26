@@ -1,35 +1,66 @@
 var myoblast = [];
-var myosin = []
 
-// myoblast determines rhythm...
-// myosin determines melody...
+/**
+ *  Myoblast generates music from embryonic DNA
+ *
+ *  Myoblasts are a type of embryonic cell called a progenitor. Like a stem cell, they are undifferentiated simple cells.
+ *  Signals created within the cell indicate what types of genes it might produce. Myoblasts are more specialized than
+ *  regular stem cells—they typically generate muscle cells, or Myosin.
+ *
+ *  Select Your Meat.
+ *
+ *  In a future iteration, maybe the myoblast can determines rhythm,
+ *  while the output myosin determines melody...
+ */
 
 var path = [];
 
+var cnv;
+var leftPadding = 200;
+var topPadding = 0;
+
 function setup() {
-  loadStrings('./fastaSequences/Bos_taurus_MYF5_201_sequence_myoblast.fa', function(res) {
-    myoblast = parseCDNA(res, routeNotes);
-  });
+  cnv = createCanvas(windowWidth - leftPadding, windowHeight - topPadding);
+  cnv.position(leftPadding, topPadding);
 
-  // loadStrings('./fastaSequences/Bos_taurus_MYO1G_sequence.fa', function(res) {
-  //   myosin = parseCDNA(res);
-  // });
-
-  createCanvas(windowWidth, windowHeight);
   stroke(250);
   strokeWeight(2);
+  textSize(48);
+  frameRate(60);
+  fill(255, 100, 100);
+  textAlign(CENTER);
+  //UI
+  setupTheMenu();
 }
 
 function draw() {
   background(0);
+  fill(255, 0, 0);
   // var percentDone = map(scorePos, 0, currentScore.length, 0, width);
   // var heightOfEllipse = map(currentScore[scorePos][1], root, root + 30, height - 100, 100);
   beginShape();
   for (var i in path) {
     curveVertex(path[i][0], path[i][1]);
   }
+
+  if (path.length > 1) {
+    vertex(path[path.length - 1][0], path[path.length - 1][1]);
+    noStroke();
+    ellipse(path[path.length - 1][0], path[path.length - 1][1], 30, 50);
+  }
   endShape();
-  // ellipse(percentDone, heightOfEllipse, 30, 50);
+
+  if (loading) {
+    doLoading();
+  }
+
+}
+
+
+var loading = false;
+
+function doLoading() {
+  text("Loading DNA Sequence...", width/2, height/2);
 }
 
 function parseCDNA(res, callback) {
@@ -47,7 +78,8 @@ function parseCDNA(res, callback) {
       // console.log(proteins);
       for (var j in proteins) {
         if (typeof(aminoAcidMap[proteins[j]]) === 'undefined') {
-          console.log('undefined: ' + proteins[j]);
+          // console.log('undefined: ' + proteins[j]);
+          elapsedTime = 1/speed + elapsedTime;
         } else {
           var amino = aminoAcidMap[proteins[j]];
 
@@ -75,4 +107,23 @@ function parseCDNA(res, callback) {
     callback(sequence);
   }
   return sequence;
+}
+
+// restart the drawing and Transport
+function reset() {
+  Tone.Transport.stop();
+  path = [];
+  scorePos = 0;
+}
+
+function selectCell(e) {
+  reset();
+
+  loading = true;
+
+  var animal = theMenu.options[theMenu.selectedIndex].value;
+
+  loadStrings('./fastaSequences/'+animal, function(res) {
+    myoblast = parseCDNA(res, routeNotes);
+  });
 }
