@@ -29,87 +29,118 @@
 //   "-" : ""                   // gap of indeterminate length
 // };
 
+
+// When an amino acid is repeated, the note is sustained until
+// the next amino acid appears in the sequence.
+// The protein sequence is accompanied by
+// harp playing the DNA codons.
+
+// primary structure
 var aminoAcidMap = {
-  "GCT" : ["REST", 1], // Alanine
-  "GCC" : ["REST", 2],
-  "GCA" : ["REST", 3],
+  // 4 R-groups of amino acids
+
+  // Water-Insoluble (hydrophobic)
+  // A, C, F, I, L, M, V
+
+  // Water-Soluble (hydrophilic)
+  // N, P, Q, S, T, W, Y
+
+  // positively-charged
+  // H, K, R
+
+  // negatively-charged
+  // D, E
+
+  // glycine has no R-Group
+  // G
+
+  // by order of hydrophobicity
+  // ["I", "V", "L", "F",
+  // "C", "M", "A", "G",
+  // "T", "S", "W", "Y",
+  // "P", "H", "N", "Q",
+  // "D", "E", "K", "R"]
+
+  "GCT" : ["A", 1], // Alanine
+  "GCC" : ["A", 2],
+  "GCA" : ["A", 3],
   "GCG" : ["A", 4],
 
-  "GAT" : ["REST", 1],
+  "GAT" : ["B", 1],
   "GAC" : ["B", 2], // Aspartic acid or Asparagine (AAUAAC)
 
-  "TGT" : ["REST", 1],
+  "TGT" : ["C", 1],
   "TGC" : ["C", 2], // Cysteine
 
-  "GAT" : ["REST", 1],
+  "GAT" : ["D", 1],
   "GAC" : ["D", 2],  // Aspartic Acid
 
-  "GAA" : ["REST", 1],
+  "GAA" : ["E", 1],
   "GAG" : ["E", 2], // Glutamic Acid
 
-  "TTT" : ["REST", 1],
+  "TTT" : ["F", 1],
   "TTC" : ["F", 2], // Phenylalanine
 
-  "GGT" : ["REST", 1],
-  "GGC" : ["REST", 2],
+  "GGT" : ["G", 1],
+  "GGC" : ["G", 2],
   "GGA" : ["G", 3],
   "GGG" : ["G", 4], // Glycine
 
-  "CAT" : ["REST", 1],
+  "CAT" : ["H", 1],
   "CAC" : ["H", 2], // Histidine
 
-  "ATT" : ["REST", 1],
-  "ATC" : ["REST", 2],
+  "ATT" : ["I", 1],
+  "ATC" : ["I", 2],
   "ATA" : ["I", 3], // Isoleucine
 
-  "AAA" : ["REST", 1],
+  "AAA" : ["K", 1],
   "AAG" : ["K", 2], // Lysine
 
-  "TTA" : ["REST", 1],
-  "TTG" : ["REST", 2],
-  "CTT" : ["REST", 3],
-  "CTC" : ["REST", 4],
-  "CTA" : ["REST", 5],
+  "TTA" : ["L", 1],
+  "TTG" : ["L", 2],
+  "CTT" : ["L", 3],
+  "CTC" : ["L", 4],
+  "CTA" : ["L", 5],
   "CTG" : ["L", 6], // Leucine
 
   "ATG" : ["M", 1], // Methionine
 
-  "AAT" : ["REST", 1],
+  "AAT" : ["N", 1],
   "AAC" : ["N", 2], // Asparagine
 
   // "TAG" : ["O", 1], // Pyrrolysine
 
-  "CCT" : ["REST", 1],
-  "CCC" : ["REST", 2],
+  "CCT" : ["P", 1],
+  "CCC" : ["P", 2],
   "CCA" : ["P", 3],
   "CCG" : ["P", 4], // Proline
 
-  "CAA" : ["REST", 1],
+  "CAA" : ["Q", 1],
   "CAG" : ["Q", 2], // Glutamine
 
-  "CGT" : ["REST", 1],
-  "CGC" : ["REST", 2],
-  "CGA" : ["REST", 3],
-  "CGG" : ["REST", 4],
+  "CGT" : ["R", 1],
+  "CGC" : ["R", 2],
+  "CGA" : ["R", 3],
+  "CGG" : ["R", 4],
   "AGA" : ["R", 5],
   "AGG" : ["R", 6], // Arginine
 
-  "TCT" : ["REST", 1],
-  "TCC" : ["REST", 2],
-  "TCA" : ["REST", 3],
-  "TCG" : ["REST", 4],
+  "TCT" : ["S", 1],
+  "TCC" : ["S", 2],
+  "TCA" : ["S", 3],
+  "TCG" : ["S", 4],
   "AGT" : ["S", 5], // Serine
   "AGC" : ["S", 6], // Serine
 
-  "ACT" : ["REST", 1],
-  "ACA" : ["REST", 2],
+  "ACT" : ["T", 1],
+  "ACA" : ["T", 2],
   "ACC" : ["T", 3],
   "ACG" : ["T", 4], // Threonine 
 
   // "TGA" : ["U", 1], // Selenocysteine 
 
-  "GTT" : ["REST", 1],
-  "GTC" : ["REST", 2],
+  "GTT" : ["V", 1],
+  "GTC" : ["V", 2],
   "GTA" : ["V", 3],
   "GTG" : ["V", 4], // Valine 
 

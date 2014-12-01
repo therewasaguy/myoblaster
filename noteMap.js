@@ -1,4 +1,11 @@
-var alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "Y", "Z"];
+// var alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "Y", "Z"];
+
+// by order of hydrophobicity
+var alphabet = ["I", "V", "L", "F",
+  "C", "M", "A", "G",
+  "T", "S", "W", "Y",
+  "P", "H", "N", "Q",
+  "D", "E", "K", "R"];
 
 // scale ideas https://github.com/uucidl/uu.maxpatches/blob/d7ed61b9a4edc6cb42893d197cd008d9e0f00d0b/patchers/scales.json
 var scales = [

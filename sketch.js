@@ -66,6 +66,9 @@ function doLoading() {
 function parseCDNA(res, callback) {
   var sequence = [];
   var elapsedTime = 0;
+
+  var previousNote = 0;
+
   // parse
   for (var i in res) {
     var line = res[i];
@@ -77,15 +80,17 @@ function parseCDNA(res, callback) {
       var proteins = line.match(/.{1,3}/g);
       // console.log(proteins);
       for (var j in proteins) {
-        if (typeof(aminoAcidMap[proteins[j]]) === 'undefined') {
-          // console.log('undefined: ' + proteins[j]);
-          elapsedTime = 1/speed + elapsedTime;
-        } else {
-          var amino = aminoAcidMap[proteins[j]];
 
+        if (typeof(aminoAcidMap[proteins[j]]) === 'undefined') {
+          // rest
+          elapsedTime = 1/speed + elapsedTime;
+        }
+        else {
+          var amino = aminoAcidMap[proteins[j]];
           // if it is a rest... just increment elapsed time
           if (amino[0] === 'REST') {
-            elapsedTime = amino[1] / speed + elapsedTime;
+            // elapsedTime = amino[1] / speed + elapsedTime;
+            elapsedTime = beatDuration / speed + elapsedTime;
           }
 
           // otherwise it's a letter in the alphabet array corresponding with amino acid...
@@ -95,9 +100,18 @@ function parseCDNA(res, callback) {
             var posInScale = notePosition % currentScale.length;
             var octave = Math.floor( notePosition / currentScale.length );
             var note = currentScale[posInScale] + 12*octave + root;
-            var duration = amino[1] / speed;
+            // var duration = amino[1] / speed;
+            var duration = beatDuration / speed;
             elapsedTime = elapsedTime + duration;
-            sequence.push([elapsedTime - duration, note, duration]);
+
+            if (note !== previousNote){
+              sequence.push([elapsedTime - duration, note, duration]);
+            } else {
+              // add to previous note's duration
+              sequence[sequence.length - 1][2] += duration;
+              console.log(sequence[sequence.length - 1][2]);
+            }
+            previousNote = note;
           }
         }
       }
