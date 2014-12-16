@@ -21,7 +21,7 @@ var topPadding = 0;
 
 function setup() {
   cnv = createCanvas(windowWidth - leftPadding, windowHeight - topPadding);
-  cnv.position(leftPadding, topPadding);
+  cnv.position(leftPadding, topPadding, -100);
 
   stroke(250);
   strokeWeight(2);
@@ -34,21 +34,22 @@ function setup() {
 }
 
 function draw() {
-  background(0);
+  background(0, 0, 0, 100);
   fill(255, 0, 0);
   // var percentDone = map(scorePos, 0, currentScore.length, 0, width);
   // var heightOfEllipse = map(currentScore[scorePos][1], root, root + 30, height - 100, 100);
-  beginShape();
-  for (var i in path) {
-    curveVertex(path[i][0], path[i][1]);
-  }
+  // beginShape();
 
-  if (path.length > 1) {
-    vertex(path[path.length - 1][0], path[path.length - 1][1]);
-    noStroke();
-    ellipse(path[path.length - 1][0], path[path.length - 1][1], 30, 50);
-  }
-  endShape();
+  // for (var i in path) {
+  //   curveVertex(path[i][0], path[i][1]);
+  // }
+
+  // if (path.length > 1) {
+  //   vertex(path[path.length - 1][0], path[path.length - 1][1]);
+  //   noStroke();
+  //   ellipse(path[path.length - 1][0], path[path.length - 1][1], 30, 50);
+  // }
+  // endShape();
 
   if (loading) {
     doLoading();
@@ -109,7 +110,7 @@ function parseCDNA(res, callback) {
             } else {
               // add to previous note's duration
               sequence[sequence.length - 1][2] += duration;
-              console.log(sequence[sequence.length - 1][2]);
+              // console.log(sequence[sequence.length - 1][2]);
             }
             previousNote = note;
           }
@@ -130,14 +131,28 @@ function reset() {
   scorePos = 0;
 }
 
-function selectCell(e) {
-  reset();
+var noteSeq = [];
 
-  loading = true;
+function selectCell(e, num) {
+  reset();
 
   var animal = theMenu.options[theMenu.selectedIndex].value;
 
+  // load music into the noteSeq array
   loadStrings('./fastaSequences/'+animal, function(res) {
-    myoblast = parseCDNA(res, routeNotes);
+    noteSeq[num] = parseCDNA(res);
   });
+  // PLAY MUSIC
+  // loadStrings('./fastaSequences/'+animal, function(res) {
+  //   myoblast = parseCDNA(res, routeNotes);
+  // });
+
+  var modelToLoad = dna2models[animal]
+
+  // this will set animalGeo[num] in the callback
+  loadGeometry(modelToLoad, num);
+}
+
+function loadedGeo(num){
+  console.log('geometry ' + num + ' has loaded');
 }
