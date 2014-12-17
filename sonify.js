@@ -25,6 +25,21 @@ synth2.connect(delay);
 phaser.connect(delay);
 delay.dryWet.setWet(.05);
 
+var rverb = new Tone.Freeverb();
+rverb.setDampening(0.02);
+rverb.setDry(0.7);
+rverb.setRoomSize(0.6);
+
+var drumFilter = new Tone.Filter('peaking');
+drumFilter.setFrequency(1500);
+
+
+var chorus = new Tone.Chorus(0.1, .2, 0.9);
+
+drumFilter.connect(rverb);
+rverb.connect(chorus);
+chorus.toMaster();
+
 var cheb = new Tone.Chebyshev();
 delay.connect(cheb);
 cheb.setOrder(12);
@@ -45,16 +60,19 @@ function updateTempo(t){
 
 // draw something when a note is plucked (called by Tone.Transport)
 function notePlucked(e) {
-
-
   loading = false;
   var noteChunk = currentScore[scorePos];
-  var note = noteChunk[1];
+
+  // figure out which MIDI value based on currentScale, which could change
+  var notePosition = noteChunk[1];
+  var posInScale = notePosition % currentScale.length;
+  var octave = Math.floor( notePosition / currentScale.length );
+  var note = currentScale[posInScale] + 12*octave + root;
+
   var duration = noteChunk[2];
 
   var percentDone = map(scorePos, 0, currentScore.length, 0, width);
-  var heightOfEllipse = map(noteChunk[1], root, root + 12 * Math.floor( alphabet.length / currentScale.length ), height - 100, 100);
-  path.push([percentDone, heightOfEllipse]);
+
   if (scorePos >= currentScore.length - 1) {
     Tone.Transport.stop(e);
     Tone.Transport.clearTimelines();
@@ -75,19 +93,75 @@ function notePlucked(e) {
     showNextFace();
     showNextFace(note);
   }
-  console.log('bang');
-  // schedule next note
-  var deltaTime = (currentScore[scorePos + 1][0] - currentScore[scorePos][0] ) * 120 / Tone.Transport.getBpm();
-  Tone.Transport.setTimeout(notePlucked, deltaTime);
+
+  // schedule next note (if there is a next note)
+  if (typeof(currentScore[scorePos + 1]) !== 'undefined') {
+    var deltaTime = (currentScore[scorePos + 1][0] - currentScore[scorePos][0] ) * 120 / Tone.Transport.getBpm();
+    Tone.Transport.setTimeout(notePlucked, deltaTime);
+  }
 }
+
+
+function drumHit(e) {
+  loading = false;
+  var noteChunk = drumScore[scorePos];
+  var drum = noteChunk[1];
+  var notePosition = noteChunk[1];
+  if (drumPos >= drumScore.length - 1) {
+    drumPos = 0;;
+  } else{
+    drumPos ++;
+  }
+
+  var whichDrum = Math.round( map_range(drum, 0, alphabet.length, 0, drumCount) );
+  drums.triggerAttack(whichDrum);
+
+  // schedule next note (if there is a next note)
+  if (typeof(drumScore[drumPos + 1]) !== 'undefined') {
+    var deltaTime = (drumScore[drumPos + 1][0] - drumScore[drumPos][0] ) * 120 / Tone.Transport.getBpm();
+    Tone.Transport.setTimeout(drumHit, deltaTime);
+  }
+}
+
 
 function playMusic() {
   loading = true;
   console.log('play!');
-  // routeNotes(noteSeq[0]);
+
+  // init
   Tone.Transport.stop();
-  Tone.Transport.setTimeout(notePlucked, 1);
   currentScore = noteSeq[0];
   scorePos = 0;
+
+  drumScore = noteSeq[1];
+  drumPos = 0;
+
+  // schedule first note
+  Tone.Transport.setTimeout(notePlucked, 1);
+  Tone.Transport.setTimeout(drumHit, 1);
+
   Tone.Transport.start();
+}
+
+// drums 
+var drumCount = 8;
+var drums = new Tone.MultiSampler({
+     0 : "./audio/drum1.wav",
+     1 : "./audio/drum2.wav",
+     // 2 : "./audio/drum3.wav",
+
+     // 3 : "./audio/tom4.wav",
+     // 4 : "./audio/tom2.wav",
+     // 5 : "./audio/tom1.wav",
+
+     2 : "./audio/drum4.wav",
+     3 : "./audio/drum5.wav",
+     4 : "./audio/drum6.wav",
+     5 : "./audio/drum7.wav",
+     6 : "./audio/drum8.wav",
+ }, drumsLoaded);
+
+function drumsLoaded() {
+  drums.connect(drumFilter);
+  drums.setVolume(-12);
 }

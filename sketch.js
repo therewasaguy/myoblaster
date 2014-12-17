@@ -84,11 +84,12 @@ function cDNAtoScore(res, callback) {
 
           // otherwise it's a letter in the alphabet array corresponding with amino acid...
           else {
-            var notePosition = alphabet.indexOf(amino[0]);
+            var note = alphabet.indexOf(amino[0]);
 
-            var posInScale = notePosition % currentScale.length;
-            var octave = Math.floor( notePosition / currentScale.length );
-            var note = currentScale[posInScale] + 12*octave + root;
+            // moving this to sonify.js
+            // var posInScale = notePosition % currentScale.length;
+            // var octave = Math.floor( notePosition / currentScale.length );
+            // var note = currentScale[posInScale] + 12*octave + root;
             // var duration = amino[1] / speed;
             var duration = beatDuration / speed;
             elapsedTime = elapsedTime + duration;

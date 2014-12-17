@@ -26,7 +26,7 @@ function init() {
   // camera
   // camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 100);
   camera = new THREE.OrthographicCamera( window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, -10000, 10000 );
-  camera.position.z = -100000;
+  camera.position.z = -10000;
 
   // scene
   scene = new THREE.Scene();
@@ -85,6 +85,8 @@ function render() {
   if (typeof (obj) !== 'undefined') {
     obj.rotation.y += (0.1*(Math.PI / 180));
     obj.rotation.y %=360;
+    // center obj
+    obj.position.setY(obj.geometry.center().y);
   }
 }
 
@@ -129,7 +131,7 @@ function initShader() {
   var noiseTexture = new THREE.ImageUtils.loadTexture( 'textures/cloud.png');
   noiseTexture.wrapS = noiseTexture.wrapT = THREE.MirroredRepeatWrapping; 
   // magnitude of noise effect
-  var noiseScale = 0.5;
+  var noiseScale = 0.01; //.5
   
   // texture to additively blend with base image texture
   var blendTexture = new THREE.ImageUtils.loadTexture( 'textures/meat1.jpg' );
@@ -317,7 +319,7 @@ function map_range(value, low1, high1, low2, high2) {
 
 
 /// CAMERA
-var minzoomspeed = 0.00015;
+var minzoomspeed = 0.000015;
 var zoomspeed = minzoomspeed;
 var zoompos = -10;
 
@@ -333,7 +335,7 @@ function updateCamera() {
 
   // Slow down quickly at the zoom limits
   if ((zoom == minzoom && zoomspeed < 0) || (zoom == maxzoom && zoomspeed > 0)) {
-    damping = .85;
+    damping = .65;
   }
 
   zoompos += zoomspeed;
@@ -343,7 +345,7 @@ function updateCamera() {
   camera.position.y = Math.sin(.25 * Math.PI * (mouse.y - .5)) * zoom - 10.0;
   camera.position.z = Math.cos(.5 * Math.PI * (mouse.x - .5)) * zoom;
   camera.zoom = zoompos ;
-  camera.updateProjectionMatrix ()
+  camera.updateProjectionMatrix ();
   // if (typeof (obj) !== 'undefined') {
   //   obj.scale.x =  map_range(obj.scale.x, 0, 1, 0, zoom);
   //   obj.scale.y =  map_range(obj.scale.y, 0, 1, 0, zoom);;
