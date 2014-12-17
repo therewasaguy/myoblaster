@@ -75,11 +75,14 @@ function animate() {
 
 function render() {
   renderer.clear();
+
+  var delta = clock.getDelta();
+  customUniforms.time.value += delta;
+
   updateCamera();
   if (typeof (obj) !== 'undefined') {
     obj.rotation.y += (0.1*(Math.PI / 180));
     obj.rotation.y %=360;
-
   }
 }
 
@@ -99,7 +102,7 @@ function loadGeometry(animalPath, num) {
 }
 
 
-var customMaterial;
+var customMaterial, customUniforms;
 function initShader() {
 
   texture = new THREE.ImageUtils.loadTexture('textures/meat1.jpg');
@@ -142,7 +145,7 @@ function initShader() {
   // magnitude of normal displacement
   var bumpScale   = 40.0;
 
-  var customUniforms = {
+  customUniforms = {
     baseTexture:  { type: "t", value: texture },
     baseSpeed:    { type: "f", value: baseSpeed },
     repeatS:    { type: "f", value: repeatS },
@@ -170,12 +173,16 @@ function initShader() {
 }
 
 
+var staticMaterial;
+var highlightMaterial;
 
 function initAnimal(g) {
+  staticMaterial = new THREE.MeshPhongMaterial( { map: texture, color: 0xffffff, side: THREE.DoubleSide, shading: THREE.NoShading, magFilter:THREE.NearestFilter, minFilter:THREE.NearestFilter } )
+  highlightMaterial = new THREE.MeshBasicMaterial({color:0xffff00});
 
   materials = [
-    // new THREE.MeshPhongMaterial( { map: texture, color: 0xffffff, side: THREE.DoubleSide, shading: THREE.NoShading, magFilter:THREE.NearestFilter, minFilter:THREE.NearestFilter } ),
-    customMaterial
+    customMaterial,
+    staticMaterial
   ];
 
   for (var i = 0; i < g.faces.length - 1; i++ ){
@@ -187,12 +194,6 @@ function initAnimal(g) {
   for (var i = 0; i < g.faces.length - 1; i++) {
     g.faces[ i ].materialIndex = i; // materialB
   }
-  // materials[0].map.generateMipMaps = false;
-  // materials[0].map.wrapS = THREE.MirroredRepeatWrapping;
-  // materials[0].map.wrapT = THREE.MirroredRepeatWrapping;
-  // materials[0].map.repeat.set(1,1);
-  // materials[0].map.needsUpdate = true;
-
   obj.geometry.computeFaceNormals();
   obj.geometry.computeVertexNormals();
   obj.geometry.buffersNeedUpdate = true;
@@ -203,11 +204,31 @@ function initAnimal(g) {
   scene.add(obj);
 }
 
+// exercise meat on mouseClick
+function exerciseMeat() {
+  if (typeof (obj) !== 'undefined') {
+    for (var i = 0; i < facePos ; i++) {
+      obj.material.materials[i] = customMaterial; // materialB
+    }
+  }
+}
 
-function showNextFace() {
+function doneExercising() {
+  if (typeof (obj) !== 'undefined') {
+    for (var i = 0; i < facePos ; i++) {
+      obj.material.materials[i] = staticMaterial; // materialB
+    }
+  }
+}
+
+function showNextFace(note) {
+
   var scaleY = map_range(facePos, 0.2, allFaces.length-1, 0.0, 1.0); //obj.scaleTarget.y);
   var scaleZ = map_range(facePos, 0.2, allFaces.length-1, 0.0, 1.0); //obj.scaleTarget.z);
   obj.scale.set(1.0, scaleY, scaleZ);
+  highlightMaterial.color.setHex(noteToColor(note));
+  // console.log(highlightMaterial);
+  obj.material.materials[facePos + 1] = highlightMaterial;
   obj.material.materials[facePos] = materials[0];
   if (facePos >= allFaces.length -1) {
     buildingAnimal = false;
@@ -215,6 +236,7 @@ function showNextFace() {
     facePos++;
   }
 }
+
 
 // work on this
 function clearAnimal() {

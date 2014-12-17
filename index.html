@@ -42,7 +42,7 @@
     // move the position along the normal
     //  but displace the vertices at the poles by the same amount
     float displacement = ( vUv.y > 0.999 || vUv.y < 0.001 ) ? 
-      bumpScale * (0.3 + 0.02 * sin(time)) :  
+      bumpScale * (0.3 + 0.02*sin(time)) :  
       bumpScale * bumpData.r;
       vec3 newPosition = position + normal * displacement;
     
@@ -148,7 +148,10 @@ void main()
       background-color: #ffff00;
       line-height: 100%;
     }
-
+    .disabled{
+      color : darkGray;
+      font-style: italic;
+    }
 
     </style>
 </head>

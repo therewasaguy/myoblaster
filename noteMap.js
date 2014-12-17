@@ -16,3 +16,26 @@ var scales = [
 ];
 
 var currentScale = scales[2];
+
+
+var noteToColor = function(note) {
+  var n = Math.abs((note - root) % 12);
+  switch(n){
+    case currentScale[0]:
+      return '0xd10000';
+    case currentScale[1]:
+      return '0xff6622';
+    case currentScale[2]:
+      return '0xffda21';
+    case currentScale[3]:
+      return '0x33dd00';
+    case currentScale[4]:
+      return '0x1133cc';
+    case currentScale[5]:
+      return '0x220066';
+    case currentScale[6]:
+      return '0x330044';
+    default:
+      return '0xffda21';
+  }
+}

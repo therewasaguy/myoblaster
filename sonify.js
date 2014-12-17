@@ -48,11 +48,6 @@ Tone.Note.route("synth", function(time, note, duration){
 // draw something when a note is plucked (called by Tone.Transport)
 function notePlucked(e) {
 
-  // show next face of animal every note
-  if (buildingAnimal) {
-    showNextFace();
-    showNextFace();
-  }
 
   loading = false;
   var noteChunk = currentScore[scorePos];
@@ -76,6 +71,13 @@ function notePlucked(e) {
   } else {
     synth1.triggerAttackRelease(synth1.midiToNote(note), duration, e);
   }
+
+  // show next face of animal every note
+  if (buildingAnimal) {
+    showNextFace();
+    showNextFace(note);
+  }
+
 
 }
 

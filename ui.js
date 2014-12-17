@@ -54,6 +54,8 @@ function setupTheMenu() {
   goButton.setAttribute("type", "button");
   goButton.setAttribute("value", "Generate");
   goButton.setAttribute("text-size", "1000");
+  goButton.disabled = true;
+  goButton.className = 'disabled';
   var thediv = document.getElementById('button');
   thediv.appendChild(goButton);
   goButton.onclick = function(e) {
@@ -61,6 +63,12 @@ function setupTheMenu() {
     playMusic();
     genGeometry(0.3);
   }
+
+}
+
+function enableButton() {
+  goButton.disabled = false;
+  goButton.className = 'enabled';
 
 }
 

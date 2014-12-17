@@ -36,20 +36,6 @@ function setup() {
 function draw() {
   background(0, 0, 0, 100);
   fill(255, 0, 0);
-  // var percentDone = map(scorePos, 0, currentScore.length, 0, width);
-  // var heightOfEllipse = map(currentScore[scorePos][1], root, root + 30, height - 100, 100);
-  // beginShape();
-
-  // for (var i in path) {
-  //   curveVertex(path[i][0], path[i][1]);
-  // }
-
-  // if (path.length > 1) {
-  //   vertex(path[path.length - 1][0], path[path.length - 1][1]);
-  //   noStroke();
-  //   ellipse(path[path.length - 1][0], path[path.length - 1][1], 30, 50);
-  // }
-  // endShape();
 
   if (loading) {
     doLoading();
@@ -142,15 +128,14 @@ function selectCell(e, num) {
   loadStrings('./fastaSequences/'+animal, function(res) {
     noteSeq[num] = parseCDNA(res);
   });
-  // PLAY MUSIC
-  // loadStrings('./fastaSequences/'+animal, function(res) {
-  //   myoblast = parseCDNA(res, routeNotes);
-  // });
 
   var modelToLoad = dna2models[animal]
 
   // this will set animalGeo[num] in the callback
   loadGeometry(modelToLoad, num);
+  if (typeof(animalGeo[0]) !== 'undefined' && typeof(animalGeo[1] !== 'undefined')) {
+    enableButton();
+  }
 }
 
 function loadedGeo(num){
