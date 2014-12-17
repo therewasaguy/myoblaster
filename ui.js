@@ -102,6 +102,20 @@ function enableButton() {
 }
 
 
+// FULL SCREEn
+addEventListener("click", function() {
+    var
+          el = document.documentElement
+        , rfs =
+               el.requestFullScreen
+            || el.webkitRequestFullScreen
+            || el.mozRequestFullScreen
+    ;
+    rfs.call(el);
+});
+
+
+
 var comestibles = {
   ":: Mammals" : ["Bear", "Bison", "Boar", "Caribou", "Cattle", "Horse", "Pig", "Rabbit"],
   ":: Fish" : ["Cod", "Herring", "Salmon", "Tilapia"]

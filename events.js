@@ -13,7 +13,31 @@ function initEvents() {
   clickCanvas.addEventListener('mousedown', onMouseDown, false);
   clickCanvas.addEventListener('mouseup', onMouseUp, false);
 
+  // resize screen
+  window.onresize = function(e) {
+    console.log(e);
+    windowHalfX = window.innerWidth / 2;
+    windowHalfY = window.innerHeight / 2;
+
+    // camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    windowWidth = window.innerWidth;
+    windowHeight = window.innerHeight;
+    var padding = 5;
+    var w = windowWidth - 200 - padding;
+    var h = windowHeight - padding;
+    // resize container, then resize p5 canvas, then reside three.js renderer
+    container.setAttribute("style","width:"+w+"; height:"+h);
+    three.setAttribute("style","width:"+w+"; height:"+h);
+    resizeCanvas(w - 5, h);
+    renderer.setSize( w, h);
+  }
 }
+
+// function onWindowResize() {
+//   console.log('resize!');
+
+// }
 
 function onDocumentMouseMove(event) {
 

@@ -86,7 +86,9 @@ function render() {
     obj.rotation.y += (0.1*(Math.PI / 180));
     obj.rotation.y %=360;
     // center obj
-    obj.position.setY(obj.geometry.center().y);
+    // obj.position.setY(obj.geometry.center().y);
+    obj.geometry.computeBoundingBox();
+    obj.position.setY(obj.geometry.boundingBox.min.y);
   }
 }
 

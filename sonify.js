@@ -25,6 +25,7 @@ synth2.connect(delay);
 phaser.connect(delay);
 delay.dryWet.setWet(.05);
 
+// DRUM STUFF
 var rverb = new Tone.Freeverb();
 rverb.setDampening(0.02);
 rverb.setDry(0.7);
@@ -33,10 +34,14 @@ rverb.setRoomSize(0.6);
 var drumFilter = new Tone.Filter('peaking');
 drumFilter.setFrequency(1500);
 
-
 var chorus = new Tone.Chorus(0.1, .2, 0.9);
 
-drumFilter.connect(rverb);
+var drumDelay = new Tone.FeedbackDelay();
+drumDelay.setDelayTime('16n');
+drumDelay.setFeedback(0.32);
+
+drumFilter.connect(drumDelay);
+drumDelay.connect(rverb);
 rverb.connect(chorus);
 chorus.toMaster();
 
@@ -147,18 +152,18 @@ function playMusic() {
 var drumCount = 8;
 var drums = new Tone.MultiSampler({
      0 : "./audio/drum1.wav",
-     1 : "./audio/drum2.wav",
+     // 1 : "./audio/drum2.wav",
      // 2 : "./audio/drum3.wav",
 
      // 3 : "./audio/tom4.wav",
      // 4 : "./audio/tom2.wav",
      // 5 : "./audio/tom1.wav",
 
-     2 : "./audio/drum4.wav",
-     3 : "./audio/drum5.wav",
-     4 : "./audio/drum6.wav",
-     5 : "./audio/drum7.wav",
-     6 : "./audio/drum8.wav",
+     1 : "./audio/drum4.wav",
+     2 : "./audio/drum5.wav",
+     3 : "./audio/drum6.wav",
+     4 : "./audio/drum7.wav",
+     5 : "./audio/drum8.wav",
  }, drumsLoaded);
 
 function drumsLoaded() {
