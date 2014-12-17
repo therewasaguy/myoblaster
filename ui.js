@@ -101,3 +101,5 @@ var dna2models = {
   "Salmon" : "fish3",
   "Tilapia" : "fish4"
 }
+
+// event handlers

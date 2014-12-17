@@ -16,7 +16,8 @@ window.onload = function() {
 
 function init() {
   clock.start();
-  initShader()
+  initShader();
+  initEvents();
 
   // add container to document
   container = document.getElementById( 'three' );
@@ -68,6 +69,7 @@ function initAnimals(){
 
 
 function animate() {
+  updateShaders();
   render();
   requestAnimationFrame( animate );
   time = clock.getElapsedTime();
@@ -143,7 +145,7 @@ function initShader() {
   // multiplier for distortion speed    
   var bumpSpeed   = 0.15;
   // magnitude of normal displacement
-  var bumpScale   = 40.0;
+  var bumpScale   = 50.0;
 
   customUniforms = {
     baseTexture:  { type: "t", value: texture },
@@ -205,20 +207,29 @@ function initAnimal(g) {
 }
 
 // exercise meat on mouseClick
+var exer = false;
 function exerciseMeat() {
-  if (typeof (obj) !== 'undefined') {
-    for (var i = 0; i < facePos ; i++) {
-      obj.material.materials[i] = customMaterial; // materialB
-    }
-  }
+  exer = true;
+}
+function doneExercising() {
+  exer = false;
 }
 
-function doneExercising() {
-  if (typeof (obj) !== 'undefined') {
-    for (var i = 0; i < facePos ; i++) {
-      obj.material.materials[i] = staticMaterial; // materialB
-    }
+function updateShaders() {
+  if (exer === true && customUniforms.bumpScale.value < 40.0) {
+    var temp = customUniforms.bumpScale.value;
+    var val = temp * 1.04;
+    customUniforms.bumpScale.value = val;
+    console.log('rising');
+
+  } else if (exer === false && customUniforms.bumpScale.value > 1.0){
+    var temp = customUniforms.bumpScale.value;
+    var val = temp * 0.98;
+    customUniforms.bumpScale.value = val;
+
+    console.log('shrinking');
   }
+  console.log(customUniforms.bumpScale.value);
 }
 
 function showNextFace(note) {
@@ -227,7 +238,6 @@ function showNextFace(note) {
   var scaleZ = map_range(facePos, 0.2, allFaces.length-1, 0.0, 1.0); //obj.scaleTarget.z);
   obj.scale.set(1.0, scaleY, scaleZ);
   highlightMaterial.color.setHex(noteToColor(note));
-  // console.log(highlightMaterial);
   obj.material.materials[facePos + 1] = highlightMaterial;
   obj.material.materials[facePos] = materials[0];
   if (facePos >= allFaces.length -1) {
@@ -310,35 +320,7 @@ function map_range(value, low1, high1, low2, high2) {
 }
 
 
-/// MOUSE
-var mouse = {'x':0, 'y':0};
-
-var windowHalfX = window.innerWidth / 2;
-var windowHalfY = window.innerHeight / 2;
-var r = 0.0;
-document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-
-function onDocumentMouseMove(event) {
-
-  mouse.x = ( event.clientX / window.innerWidth ) * 2; // * 10;
-  mouse.y = ( event.clientY / window.innerHeight ) * 2; //* 10;
-}
-
-
-window.addEventListener( 'mousewheel', onMouseWheel, false );
-window.addEventListener( 'DOMMouseScroll', onMouseWheel, false );
-
-function onMouseWheel(ev) {
-  var amount = -ev.wheelDeltaY || ev.detail;
-  var dir = amount / Math.abs(amount);
-  zoomspeed = dir/5;
-
-  // Slow down default zoom speed after user starts zooming, to give them more control
-  minzoomspeed = 0.001;
-}
-
-
-/// camera
+/// CAMERA
 var minzoomspeed = 0.00015;
 var zoomspeed = minzoomspeed;
 var zoompos = -10;
