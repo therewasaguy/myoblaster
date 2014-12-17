@@ -108,8 +108,8 @@ void main()
 
     #three {
       position:absolute;
-      width:100%;
       left:200px;
+      width:80%;
       top:0px;
       bottom:0px;
       height:100%;
@@ -130,7 +130,45 @@ void main()
       opacity:0.2;
     }
 
-    input {
+    a.tooltips {
+      position: relative;
+      display: inline;
+    }
+    a.tooltips span {
+      position: absolute;
+      width:400px;
+      color: #FFFFFF;
+      background: #000000;
+      /*height: 30px;*/
+      line-height: 30px;
+      text-align: center;
+      visibility: hidden;
+      border-radius: 6px;
+    }
+    a.tooltips span:after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -8px;
+      width: 0; height: 0;
+      border-top: 8px solid #000000;
+      border-right: 8px solid transparent;
+      border-left: 8px solid transparent;
+    }
+    a:hover.tooltips span {
+      visibility: visible;
+      opacity: 0.9;
+      bottom: 30px;
+      left: 50%;
+      margin-left: 10px;
+      z-index: 999;
+    }
+/*    .tooltip {
+      visibility:hidden;
+    }
+*/    
+      input {
       /*display:inline-block;*/
       /*width:170px;*/
       font-size: 32;
@@ -178,13 +216,13 @@ void main()
       </div>
       <div id="button">
       </div>
+      <div id="tempo">
+      </div>
 
       <div id="belowDrop">
       <br/>
 
       <br/>
-      <p>Myoblasts are undifferentiated embryonic cells primed to generate Myosin, a protein specific to muscle cells. 
-      Meat is mostly muscle. So myoblasts play a major role in the creation of all meat.</p>
 
       <p>
       Animals selected from the <a href="https://www.google.ca/patents/WO2013016547A2">
@@ -192,7 +230,16 @@ void main()
       </p>
 
       <p>
-      DNA sequences via <a href="http://ensembl.org">ensembl.org</a>
+      <a class="tooltips" href="#"><b>Myoblasts</b>
+      <span>     Myoblasts are undifferentiated embryonic cells primed to generate Myosin, a protein specific to muscle cells. 
+          Meat is mostly muscle. So myoblasts play a major role in the creation of all meat.</span></a>
+      </p>
+
+      <p>
+      <a class="tooltips" href="#">Credits
+      <span>      DNA sequences via ensembl.org.
+      3D models via ro.me.
+      Built with tone.js and three.js</span></a>
       </p>
 
       <p><a href="http://www.itp.jasonsigal.cc/?p=729">More Info</a></p>

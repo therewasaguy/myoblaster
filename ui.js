@@ -1,4 +1,4 @@
-var theMenu, otherMenu, goButton;
+var theMenu, otherMenu, goButton, tempoSlider, tempoOutput;
 
 function setupTheMenu() {
 
@@ -61,9 +61,38 @@ function setupTheMenu() {
   goButton.onclick = function(e) {
     console.log(e);
     playMusic();
-    genGeometry(0.3);
+    genGeometry();
   }
 
+  // SLIDERS
+  tempoSlider = document.createElement("INPUT");
+  tempoSlider.setAttribute("type", "range");
+  tempoSlider.setAttribute("min", "20");
+  tempoSlider.setAttribute("max", "500");
+  tempoSlider.setAttribute("id", "tempoSlider");
+  tempoSlider.oninput = function(e) {
+    document.querySelector('#tempoOut').value = 'Speed: ' + e.target.value;
+    updateTempo(e.target.value);
+  }
+  var thediv = document.getElementById('tempo');
+  thediv.appendChild(tempoSlider);
+  var br = document.createElement('br')
+  thediv.appendChild(br);
+
+  // SLIDER OUTPUT
+  tempoOutput = document.createElement("OUTPUT");
+  tempoOutput.setAttribute('for', tempoSlider);
+  tempoOutput.setAttribute('id', 'tempoOut');
+  tempoOutput.setAttribute('width', '300');
+  tempoOutput.setAttribute('width', '300');
+  thediv.appendChild(tempoOutput);
+
+  initBpmSlider();
+}
+
+function initBpmSlider() {
+  tempoSlider.setAttribute("value", "120");
+  tempoOutput.innerHTML = 'Speed: ' + 120;
 }
 
 function enableButton() {
@@ -101,5 +130,3 @@ var dna2models = {
   "Salmon" : "fish3",
   "Tilapia" : "fish4"
 }
-
-// event handlers

@@ -24,25 +24,23 @@ lowPass.connect(phaser);
 synth2.connect(delay);
 phaser.connect(delay);
 delay.dryWet.setWet(.05);
-delay.toMaster();
 
-function routeNotes(sequence) {
-  Tone.Transport.stop();
+var cheb = new Tone.Chebyshev();
+delay.connect(cheb);
+cheb.setOrder(12);
+cheb.setDry(1);
+cheb.toMaster();
 
-  var myScore = {
-    "synth" : sequence
-  };
-  Tone.Note.parseScore(myScore);
-
-  Tone.Transport.start();
-  currentScore = sequence;
-  scorePos = 0;
+function updateCheb(){
+  if (typeof(customUniforms) !== 'undefined'){
+    var dryness = map(customUniforms.bumpScale.value, 1, 40, 1, 0);
+    cheb.setDry(dryness, 0.2);
+  }
 }
 
-
-Tone.Note.route("synth", function(time, note, duration){
-  Tone.Transport.setTimeline(notePlucked, time);
-});
+function updateTempo(t){
+  Tone.Transport.setBpm(t);
+}
 
 
 // draw something when a note is plucked (called by Tone.Transport)
@@ -77,12 +75,19 @@ function notePlucked(e) {
     showNextFace();
     showNextFace(note);
   }
-
-
+  console.log('bang');
+  // schedule next note
+  var deltaTime = (currentScore[scorePos + 1][0] - currentScore[scorePos][0] ) * 120 / Tone.Transport.getBpm();
+  Tone.Transport.setTimeout(notePlucked, deltaTime);
 }
 
 function playMusic() {
   loading = true;
   console.log('play!');
-  routeNotes(noteSeq[0]);
+  // routeNotes(noteSeq[0]);
+  Tone.Transport.stop();
+  Tone.Transport.setTimeout(notePlucked, 1);
+  currentScore = noteSeq[0];
+  scorePos = 0;
+  Tone.Transport.start();
 }

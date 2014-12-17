@@ -24,6 +24,7 @@ function onDocumentMouseMove(event) {
 
 
 function onMouseWheel(ev) {
+  ev.preventDefault();
   var amount = -ev.wheelDeltaY || ev.detail;
   var dir = amount / Math.abs(amount);
   zoomspeed = dir/5;

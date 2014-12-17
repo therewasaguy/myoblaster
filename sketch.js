@@ -41,6 +41,7 @@ function draw() {
     doLoading();
   }
 
+  updateCheb();
 }
 
 
@@ -50,7 +51,8 @@ function doLoading() {
   text("Loading DNA Sequence...", width/2, height/2);
 }
 
-function parseCDNA(res, callback) {
+// parseCDNA
+function cDNAtoScore(res, callback) {
   var sequence = [];
   var elapsedTime = 0;
 
@@ -126,7 +128,7 @@ function selectCell(e, num) {
 
   // load music into the noteSeq array
   loadStrings('./fastaSequences/'+animal, function(res) {
-    noteSeq[num] = parseCDNA(res);
+    noteSeq[num] = cDNAtoScore(res);
   });
 
   var modelToLoad = dna2models[animal]

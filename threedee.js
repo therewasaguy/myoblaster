@@ -54,7 +54,7 @@ function init() {
   } else {
     renderer = new THREE.CanvasRenderer();
   }
-  renderer.setSize( window.innerWidth, window.innerHeight );
+  renderer.setSize( window.innerWidth - 200, window.innerHeight );
   renderer.setClearColor(0x222222, 0.01);
   container.appendChild( renderer.domElement );
 
@@ -218,18 +218,14 @@ function doneExercising() {
 function updateShaders() {
   if (exer === true && customUniforms.bumpScale.value < 40.0) {
     var temp = customUniforms.bumpScale.value;
-    var val = temp * 1.04;
+    var val = temp * 1.1;
     customUniforms.bumpScale.value = val;
-    console.log('rising');
 
   } else if (exer === false && customUniforms.bumpScale.value > 1.0){
     var temp = customUniforms.bumpScale.value;
     var val = temp * 0.98;
     customUniforms.bumpScale.value = val;
-
-    console.log('shrinking');
   }
-  console.log(customUniforms.bumpScale.value);
 }
 
 function showNextFace(note) {
@@ -262,22 +258,22 @@ function genGeometry(percentage) {
     obj = null;
     animals = [];
   }
-  var p = 0.1;
+  var p = 0.4;
   if (typeof (percentage) !== 'undefined') {
     p = percentage;
   } else {
     console.log('percentage was undefined');
   }
-  console.log(p);
   var geometry = animalGeo[0].clone();
   for (var i in animalGeo[0].vertices) {
     var vec = animalGeo[0].vertices[i].lerp(animalGeo[1].vertices[i % animalGeo[1].vertices.length], p);
-    geometry.vertices[i] = vec;
+    geometry.vertices[i] = vec.clone();
   }
 
   geometry.computeVertexNormals();
   geometry.computeLineDistances();
   geometry.verticesNeedUpdate = true;
+  geometry.normalsNeedUpdate = true;
   geometry.buffersNeedUpdate = true;
   geometry.uvsNeedUpdate = true;
   geometry.elementsNeedUpdate = true;
