@@ -15,11 +15,10 @@ function initEvents() {
 
   // resize screen
   window.onresize = function(e) {
-    console.log(e);
     windowHalfX = window.innerWidth / 2;
     windowHalfY = window.innerHeight / 2;
 
-    // camera.aspect = window.innerWidth / window.innerHeight;
+    camera.aspect = (window.innerWidth - 200) / window.innerHeight;
     camera.updateProjectionMatrix();
     windowWidth = window.innerWidth;
     windowHeight = window.innerHeight;
@@ -31,13 +30,9 @@ function initEvents() {
     three.setAttribute("style","width:"+w+"; height:"+h);
     resizeCanvas(w - 5, h);
     renderer.setSize( w, h);
+
   }
 }
-
-// function onWindowResize() {
-//   console.log('resize!');
-
-// }
 
 function onDocumentMouseMove(event) {
 
@@ -61,11 +56,11 @@ function onMouseWheel(ev) {
 function onMouseDown(e) {
   // console.log(e);
   exerciseMeat();
+  exMusicOn();
 }
 
 function onMouseUp(e) {
   // console.log(e);
   doneExercising();
-  console.log('done!');
-
+  exMusicOff();
 }

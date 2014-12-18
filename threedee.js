@@ -25,7 +25,7 @@ function init() {
 
   // camera
   // camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 100);
-  camera = new THREE.OrthographicCamera( window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, -10000, 10000 );
+  camera = new THREE.OrthographicCamera( window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, -50000, 50000 );
   camera.position.z = -10000;
 
   // scene
@@ -83,12 +83,14 @@ function render() {
 
   updateCamera();
   if (typeof (obj) !== 'undefined') {
-    obj.rotation.y += (0.1*(Math.PI / 180));
-    obj.rotation.y %=360;
+    obj.rotation.z += (0.1*(Math.PI / 180));
+    obj.rotation.z %=360;
+
     // center obj
     // obj.position.setY(obj.geometry.center().y);
-    obj.geometry.computeBoundingBox();
-    obj.position.setY(obj.geometry.boundingBox.min.y);
+    // obj.geometry.computeBoundingBox();
+    // obj.position.setY(obj.geometry.boundingBox.min.y);
+    // obj.position.setY()
   }
 }
 
@@ -328,7 +330,7 @@ var zoompos = -10;
 function updateCamera() {
   // Put some limits on zooming
   var minzoom = 10;
-  var maxzoom = 4000;
+  var maxzoom = 8000;
   var damping = (Math.abs(zoomspeed) > minzoomspeed ? 0.3 : 1.0);
 
   // Zoom out faster the further out you go
@@ -342,12 +344,20 @@ function updateCamera() {
 
   zoompos += zoomspeed;
   zoomspeed *= damping;
+  if (typeof (obj) !== 'undefined'){
+    obj.geometry.computeBoundingBox();
+    camera.position.x = Math.sin(.5 * Math.PI * (mouse.x - .5)) * zoom;
+    // console.log(camera.position.x);
+    camera.position.y =  Math.sin(.25 * Math.PI * (mouse.y - .5)) * zoom;// - ((obj.geometry.boundingBox.min.y - obj.geometry.boundingBox.max.y) / 2) ) * zoom;
+    // camera.position.y = ( Math.sin(.25 * Math.PI * (mouse.y - .5)) - ((obj.geometry.boundingBox.min.y - obj.geometry.boundingBox.max.y) / 2) ) * zoom;
+    // obj.rotation.y = map(mouse.y, 0, windowHeight, 0, 2*Math.PI); //Math.sin(.25 * Math.PI * (mouse.y - .5));
+    // obj.rotation.x = map(mouse.x, 0, windowWidth, 0, 2*Math.PI); //Math.sin(.25 * Math.PI * (mouse.x - .5));
 
-  camera.position.x = Math.sin(.5 * Math.PI * (mouse.x - .5)) * zoom;
-  camera.position.y = Math.sin(.25 * Math.PI * (mouse.y - .5)) * zoom - 10.0;
-  camera.position.z = Math.cos(.5 * Math.PI * (mouse.x - .5)) * zoom;
-  camera.zoom = zoompos ;
-  camera.updateProjectionMatrix ();
+    camera.position.z = Math.cos(.5 * Math.PI * (mouse.x - .5)) * zoom ;
+
+  }
+    camera.zoom = zoompos ;
+    camera.updateProjectionMatrix ();
   // if (typeof (obj) !== 'undefined') {
   //   obj.scale.x =  map_range(obj.scale.x, 0, 1, 0, zoom);
   //   obj.scale.y =  map_range(obj.scale.y, 0, 1, 0, zoom);;
@@ -358,6 +368,7 @@ function updateCamera() {
   renderer.render(scene, camera);
 
 }
+
 
 function onWindowResize(event) {
   updateRendererSizes();

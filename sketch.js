@@ -122,10 +122,10 @@ function reset() {
 
 var noteSeq = [];
 
-function selectCell(e, num) {
+function selectCell(e, num, whichMenu) {
   reset();
 
-  var animal = theMenu.options[theMenu.selectedIndex].value;
+  var animal = whichMenu.options[whichMenu.selectedIndex].value;
 
   // load music into the noteSeq array
   loadStrings('./fastaSequences/'+animal, function(res) {

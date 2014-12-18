@@ -19,7 +19,7 @@ function setupTheMenu() {
   }
 
   theMenu.onchange = function(e) {
-    selectCell(e, 0)
+    selectCell(e, 0, theMenu)
   };
   // document.body.appendChild(theMenu);
   var dropdownDiv = document.getElementById('dropdown1');
@@ -43,7 +43,7 @@ function setupTheMenu() {
   }
 
   otherMenu.onchange = function(e) {
-    selectCell(e, 1)
+    selectCell(e, 1, otherMenu)
   };
   // document.body.appendChild(theMenu);
   var dropdownDiv = document.getElementById('dropdown2');
@@ -59,7 +59,6 @@ function setupTheMenu() {
   var thediv = document.getElementById('button');
   thediv.appendChild(goButton);
   goButton.onclick = function(e) {
-    console.log(e);
     playMusic();
     genGeometry();
   }

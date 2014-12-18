@@ -47,7 +47,7 @@ chorus.toMaster();
 
 var cheb = new Tone.Chebyshev();
 delay.connect(cheb);
-cheb.setOrder(12);
+cheb.setOrder(24);
 cheb.setDry(1);
 cheb.toMaster();
 
@@ -131,7 +131,6 @@ function drumHit(e) {
 
 function playMusic() {
   loading = true;
-  console.log('play!');
 
   // init
   Tone.Transport.stop();
@@ -147,6 +146,30 @@ function playMusic() {
 
   Tone.Transport.start();
 }
+
+var exPlayer = new Tone.Player('./audio/eatMeat.wav', eatLoaded);
+
+function eatLoaded() {
+  exPlayer.toMaster();
+  exPlayer.setVolume(-140);
+  exPlayer.loop = true;
+  exPlayer.start(0);
+  exPlayer.setPlaybackRate(0.5);
+}
+
+
+function exMusicOn() {
+  if (typeof(obj) !== 'undefined'){
+    exPlayer.setVolume(3, 3);
+  }
+}
+
+function exMusicOff() {
+  if (typeof(obj) !== 'undefined'){
+    exPlayer.setVolume(-140, 10);
+  }
+}
+
 
 // drums 
 var drumCount = 8;
