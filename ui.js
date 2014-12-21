@@ -86,12 +86,58 @@ function setupTheMenu() {
   tempoOutput.setAttribute('width', '300');
   thediv.appendChild(tempoOutput);
 
+
+  // ANIMAL SLIDER
+  ratioSlider = document.createElement("INPUT");
+  ratioSlider.setAttribute("type", "range");
+  ratioSlider.setAttribute("min", "0");
+  ratioSlider.setAttribute("max", "100");
+  ratioSlider.setAttribute("id", "tempoSlider");
+  ratioSlider.oninput = function(e) {
+    document.querySelector('#ratioOut').value = 'Animal Ratio: ' + e.target.value + "%";
+    updateRatio((100 - e.target.value) / 100);
+  }
+  var thediv = document.getElementById('tempo');
+  thediv.appendChild(ratioSlider);
+  var br = document.createElement('br')
+  thediv.appendChild(br);
+
+  // SLIDER OUTPUT
+  ratioOutput = document.createElement("OUTPUT");
+  ratioOutput.setAttribute('for', ratioSlider);
+  ratioOutput.setAttribute('id', 'ratioOut');
+  ratioOutput.setAttribute('width', '300');
+  ratioOutput.setAttribute('width', '300');
+  thediv.appendChild(ratioOutput);
+
+
+  // SCALE SLIDER
+  var scaleLabel = document.createElement("p");
+  scaleLabel.innerHTML = 'Musical Scale: '
+  thediv.appendChild(scaleLabel);
+
+  scaleMenu = document.createElement('SELECT');
+  scaleMenu.id = 'scaleMenu';
+
+  for (var i in scales) {
+    var option = document.createElement('option');
+    option.text = i;
+    scaleMenu.add(option);
+  }
+
+  scaleMenu.onchange = function(e) {
+    setScale(e.target.value, scaleMenu);
+  };
+  thediv.appendChild(scaleMenu);
+
   initBpmSlider();
 }
 
 function initBpmSlider() {
   tempoSlider.setAttribute("value", "120");
   tempoOutput.innerHTML = 'Speed: ' + 120;
+  ratioSlider.setAttribute("value", "60");
+  ratioOutput.innerHTML = 'Animal Ratio: ' + 60 + "%";
 }
 
 function enableButton() {

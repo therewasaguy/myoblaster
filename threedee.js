@@ -257,6 +257,12 @@ function clearAnimal() {
   }
 }
 
+var perc = 0.4;
+function updateRatio(val){
+  perc = val;
+  console.log(perc); 
+}
+
 /// generate the hybrid animal
 function genGeometry(percentage) {
   if (typeof (obj) !== 'undefined') {
@@ -264,7 +270,7 @@ function genGeometry(percentage) {
     obj = null;
     animals = [];
   }
-  var p = 0.4;
+  var p = perc;
   if (typeof (percentage) !== 'undefined') {
     p = percentage;
   } else {
@@ -347,22 +353,13 @@ function updateCamera() {
   if (typeof (obj) !== 'undefined'){
     obj.geometry.computeBoundingBox();
     camera.position.x = Math.sin(.5 * Math.PI * (mouse.x - .5)) * zoom;
-    // console.log(camera.position.x);
     camera.position.y =  Math.sin(.25 * Math.PI * (mouse.y - .5)) * zoom;// - ((obj.geometry.boundingBox.min.y - obj.geometry.boundingBox.max.y) / 2) ) * zoom;
-    // camera.position.y = ( Math.sin(.25 * Math.PI * (mouse.y - .5)) - ((obj.geometry.boundingBox.min.y - obj.geometry.boundingBox.max.y) / 2) ) * zoom;
-    // obj.rotation.y = map(mouse.y, 0, windowHeight, 0, 2*Math.PI); //Math.sin(.25 * Math.PI * (mouse.y - .5));
-    // obj.rotation.x = map(mouse.x, 0, windowWidth, 0, 2*Math.PI); //Math.sin(.25 * Math.PI * (mouse.x - .5));
 
     camera.position.z = Math.cos(.5 * Math.PI * (mouse.x - .5)) * zoom ;
 
   }
-    camera.zoom = zoompos ;
-    camera.updateProjectionMatrix ();
-  // if (typeof (obj) !== 'undefined') {
-  //   obj.scale.x =  map_range(obj.scale.x, 0, 1, 0, zoom);
-  //   obj.scale.y =  map_range(obj.scale.y, 0, 1, 0, zoom);;
-  //   obj.scale.z =  map_range(obj.scale.z, 0, 1, 0, zoom);;
-  // }
+  camera.zoom = zoompos ;
+  camera.updateProjectionMatrix ();
 
   camera.lookAt(scene.position);
   renderer.render(scene, camera);

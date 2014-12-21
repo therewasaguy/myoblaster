@@ -109,7 +109,7 @@ function notePlucked(e) {
 
 function drumHit(e) {
   loading = false;
-  var noteChunk = drumScore[scorePos];
+  var noteChunk = drumScore[drumPos];
   var drum = noteChunk[1];
   var notePosition = noteChunk[1];
   if (drumPos >= drumScore.length - 1) {
@@ -191,5 +191,5 @@ var drums = new Tone.MultiSampler({
 
 function drumsLoaded() {
   drums.connect(drumFilter);
-  drums.setVolume(-12);
+  drums.setVolume(-6);
 }
